@@ -40,6 +40,21 @@ public class TestFixtures {
                                                         "\"icon_url\":\"Local_Icon_Url\"," +
                                                         "\"icon_emoji\":\":rocket:\"}";
 
+  public static final String PR_SPECIAL_CHARACTERS_IN_TITLE = "{\"channel\":\"#local_channel\"," +
+                                                        "\"mrkdwn\":true," +
+                                                        "\"link_names\":true," +
+                                                        "\"attachments\":" +
+                                                        "[{\"mrkdwn_in\":" +
+                                                        "[\"pretext\",\"text\",\"title\",\"fields\",\"fallback\"]," +
+                                                        "\"fields\":[]," +
+                                                        "\"fallback\":\"unknown user opened pull request \\\"Upgrade 1.0.0 \\u0026gt; 1.0.1 \\u0026amp;\\u0026amp; check that 1 \\u0026lt; 2\\\". \\u003chttps://bitbucket_url/pull_request|(open)\\u003e\"," +
+                                                        "\"color\":\"#2267c4\"," +
+                                                        "\"text\":\"opened pull request \\u003chttps://bitbucket_url/pull_request|#99999999999999: Upgrade 1.0.0 \\u0026gt; 1.0.1 \\u0026amp;\\u0026amp; check that 1 \\u0026lt; 2\\u003e\"," +
+                                                        "\"author_name\":\"unknown user\"," +
+                                                        "\"author_icon\":\"\"}]," +
+                                                        "\"icon_url\":\"Local_Icon_Url\"," +
+                                                        "\"icon_emoji\":\":rocket:\"}";
+
   public static final String PR_OVERRIDE_SETTINGS_PAYLOAD = "{\"channel\":\"#local_channel\"," +
                                                         "\"mrkdwn\":true," +
                                                         "\"link_names\":true," +

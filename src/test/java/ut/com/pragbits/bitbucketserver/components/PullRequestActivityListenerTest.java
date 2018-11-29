@@ -189,6 +189,20 @@ public class PullRequestActivityListenerTest {
   }
 
   @Test
+  public void notifySlackChannelEscapeHtmlCharactersInPrTitle() throws Exception {
+    when(slackSettings.isSlackNotificationsEnabled()).thenReturn(true);
+    when(slackSettings.isSlackNotificationsOverrideEnabled()).thenReturn(true);
+    when(slackSettings.isSlackNotificationsOpenedEnabled()).thenReturn(true);
+    when(pullRequestRefTo.getDisplayId()).thenReturn(TestFixtures.BUGFIX_REF_ID);
+    when(pullRequest.getTitle()).thenReturn("Upgrade 1.0.0 > 1.0.1 && check that 1 < 2");
+
+    PullRequestActivityListener listener = new PullRequestActivityListener(slackGlobalSettingsService, slackSettingsService, navBuilder, slackNotifier, avatarService);
+    listener.NotifySlackChannel(event);
+
+    verify(slackNotifier).SendSlackNotification(eq(TestFixtures.SLACK_LOCAL_HOOK_URL), eq(TestFixtures.PR_SPECIAL_CHARACTERS_IN_TITLE));
+  }
+
+  @Test
   public void notifySlackChannelEmptyChannel() throws Exception {
     when(slackSettings.isSlackNotificationsEnabled()).thenReturn(true);
     when(slackSettings.isSlackNotificationsOverrideEnabled()).thenReturn(true);

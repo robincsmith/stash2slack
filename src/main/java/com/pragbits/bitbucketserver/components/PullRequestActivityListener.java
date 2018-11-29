@@ -142,17 +142,22 @@ public class PullRequestActivityListener {
             attachment.setAuthorName(userName);
             attachment.setAuthorIcon(avatar);
 
+            String pullRequestTitle = event.getPullRequest().getTitle()
+                    .replaceAll("&", "&amp;")
+                    .replaceAll("<", "&lt;")
+                    .replaceAll(">", "&gt;");
+
             switch (event.getActivity().getAction()) {
                 case OPENED:
                     attachment.setColor(ColorCode.BLUE.getCode());
                     attachment.setFallback(String.format("%s opened pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("opened pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
 
 
                     if (resolvedLevel == NotificationLevel.COMPACT) {
@@ -168,12 +173,12 @@ public class PullRequestActivityListener {
                     attachment.setColor(ColorCode.BLUE.getCode());
                     attachment.setFallback(String.format("%s reopened pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("reopened pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
 
                     if (resolvedLevel == NotificationLevel.COMPACT) {
                         this.addField(attachment, "Description", event.getPullRequest().getDescription());
@@ -187,12 +192,12 @@ public class PullRequestActivityListener {
                     attachment.setColor(ColorCode.PURPLE.getCode());
                     attachment.setFallback(String.format("%s updated pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("updated pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
 
                     if (resolvedLevel == NotificationLevel.COMPACT) {
                         this.addField(attachment, "Description", event.getPullRequest().getDescription());
@@ -206,60 +211,60 @@ public class PullRequestActivityListener {
                     attachment.setColor(ColorCode.GREEN.getCode());
                     attachment.setFallback(String.format("%s approved pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("approved pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
                     break;
 
                 case UNAPPROVED:
                     attachment.setColor(ColorCode.RED.getCode());
                     attachment.setFallback(String.format("%s unapproved pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("unapproved pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
                     break;
 
                 case DECLINED:
                     attachment.setColor(ColorCode.DARK_RED.getCode());
                     attachment.setFallback(String.format("%s declined pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("declined pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
                     break;
 
                 case MERGED:
                     attachment.setColor(ColorCode.DARK_GREEN.getCode());
                     attachment.setFallback(String.format("%s merged pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("merged pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
                     break;
 
                 case RESCOPED:
                     attachment.setColor(ColorCode.PURPLE.getCode());
                     attachment.setFallback(String.format("%s rescoped on pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             url));
                     attachment.setText(String.format("rescoped on pull request <%s|#%d: %s>",
                                                             url,
                                                             event.getPullRequest().getId(),
-                                                            event.getPullRequest().getTitle()));
+                                                            pullRequestTitle));
                     break;
 
                 case COMMENTED:
@@ -271,19 +276,19 @@ public class PullRequestActivityListener {
                     attachment.setColor(ColorCode.PALE_BLUE.getCode());
                     attachment.setFallback(String.format("%s commented on pull request \"%s\". <%s|(open)>",
                                                             userName,
-                                                            event.getPullRequest().getTitle(),
+                                                            pullRequestTitle,
                                                             commentUrl));
                     if (resolvedLevel == NotificationLevel.MINIMAL) {
                         attachment.setText(String.format("commented on pull request <%s|#%d: %s>",
                                 commentUrl,
                                 event.getPullRequest().getId(),
-                                event.getPullRequest().getTitle()));
+                                pullRequestTitle));
                     }
                     if (resolvedLevel == NotificationLevel.COMPACT || resolvedLevel == NotificationLevel.VERBOSE) {
                         attachment.setText(String.format("commented on pull request <%s|#%d: %s>\n%s",
                                 commentUrl,
                                 event.getPullRequest().getId(),
-                                event.getPullRequest().getTitle(),
+                                pullRequestTitle,
                                 ((PullRequestCommentActivityEvent) event).getActivity().getComment().getText()));
                     }
                     break;
@@ -291,12 +296,12 @@ public class PullRequestActivityListener {
                     attachment.setColor(ColorCode.ORANGE.getCode());
                     attachment.setFallback(String.format("%s reviewed pull request \"%s\". <%s|(open)>",
                       userName,
-                      event.getPullRequest().getTitle(),
+                      pullRequestTitle,
                       url));
                     attachment.setText(String.format("reviewed pull request <%s|#%d: %s>",
                       url,
                       event.getPullRequest().getId(),
-                      event.getPullRequest().getTitle()));
+                      pullRequestTitle));
                     break;
             }
 
